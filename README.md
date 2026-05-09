@@ -23,6 +23,59 @@ agent PaymentBot {
 }
 ```
 
+## Quick Start
+
+```bash
+pip install .
+asl-check examples/
+```
+
+Output:
+
+```
+asl-check 0.1.0 — scanning 3 file(s)
+
+────────────────────────────────────────────────────────────
+  PASS  examples/payment-bot.asl
+  agents: 1  statements: 11  threat coverage: 40%
+
+────────────────────────────────────────────────────────────
+  PASS  examples/data-pipeline.asl
+  agents: 1  statements: 9  threat coverage: 50%
+
+────────────────────────────────────────────────────────────
+  PASS  examples/multi-agent.asl
+  agents: 1  statements: 4  threat coverage: 40%
+
+────────────────────────────────────────────────────────────
+✓ all 3 specification(s) valid
+```
+
+Or check a single file:
+
+```bash
+asl-check my-agent.asl
+```
+
+Or without installing:
+
+```bash
+python -m asl_check ./
+```
+
+## What the Compiler Does
+
+1. **Parse** — Recursive-descent parser implementing the full [EBNF grammar](./ASL-SPEC-v1.0.md#6-grammar-ebnf). Tokenizer with line/col tracking.
+2. **Check** — 5-pass semantic validation:
+   - Structural correctness (empty agents, duplicate declarations)
+   - Capability/Deny consistency (shadow detection)
+   - Threat coverage mapping (10-vector taxonomy)
+   - Composition reference validation
+   - Duplicate statement detection
+3. **Report** — PASS/FAIL per file, threat coverage %, actionable diagnostics.
+
+Zero dependencies. Python ≥3.10.
+
 ## Quick Links
 
 - **[Full Specification (v1.0)](./ASL-SPEC-v1.0.md)**
